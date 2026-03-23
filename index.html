@@ -32,15 +32,32 @@
             <p>Resumo consolidado de desempenho da operacao.</p>
           </div>
 
-          <div class="controls">
-            <label for="periodo">Periodo</label>
-            <select id="periodo" aria-label="Selecionar periodo">
-              <option value="diario">Diario</option>
-              <option value="semanal">Semanal</option>
-              <option value="mensal" selected>Mensal</option>
-            </select>
+          <div class="controls-wrap">
+            <div class="controls">
+              <label for="periodo">Periodo</label>
+              <select id="periodo" aria-label="Selecionar periodo">
+                <option value="diario">Diario</option>
+                <option value="semanal">Semanal</option>
+                <option value="mensal" selected>Mensal</option>
+              </select>
+            </div>
+
+            <div class="data-controls">
+              <input
+                id="data-url"
+                type="url"
+                placeholder="Cole a URL da base (csv/json)"
+                aria-label="URL da base de dados"
+              />
+              <button id="load-url" type="button">Carregar URL</button>
+              <label class="file-label" for="data-file">Importar arquivo</label>
+              <input id="data-file" type="file" accept=".csv,.json,.xlsx,.xls" />
+            </div>
           </div>
         </header>
+        <p id="data-status" class="status-msg" aria-live="polite">
+          Usando dados de demonstracao.
+        </p>
 
         <section class="kpi-grid" id="indicadores">
           <article class="kpi-card">
@@ -106,6 +123,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
