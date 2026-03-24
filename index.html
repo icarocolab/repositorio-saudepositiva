@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saude Positiva | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div class="logo">Saude<span>Dash</span></div>
+        <nav>
+          <a class="active" href="#visao-geral">Visao geral</a>
+          <a href="#indicadores">Indicadores</a>
+          <a href="#vendas">Atendimentos</a>
+          <a href="#meta">Metas</a>
+          <a href="#usuarios">Usuarios</a>
+        </nav>
+      </aside>
+
+      <main class="dashboard">
+        <header class="topbar" id="visao-geral">
+          <div>
+            <h1>Dashboard de Escala ABDI</h1>
+            <p>Painel alinhado a proposta da Saude Positiva para fase de escala.</p>
+          </div>
+
+          <div class="controls-wrap">
+            <div class="controls">
+              <label for="periodo">Periodo</label>
+              <select id="periodo" aria-label="Selecionar periodo">
+                <option value="diario">Diario</option>
+                <option value="semanal">Semanal</option>
+                <option value="mensal" selected>Mensal</option>
+              </select>
+            </div>
+
+            <div class="data-controls">
+              <input
+                id="data-url"
+                type="url"
+                placeholder="Cole a URL da base (csv/json)"
+                aria-label="URL da base de dados"
+              />
+              <button id="load-url" type="button">Carregar URL</button>
+              <label class="file-label" for="data-file">Importar arquivo</label>
+              <input id="data-file" type="file" accept=".csv,.json,.xlsx,.xls" />
+            </div>
+          </div>
+        </header>
+        <p id="data-status" class="status-msg" aria-live="polite">
+          Usando dados de demonstracao.
+        </p>
+        <p class="status-note">
+          Base "resultados consolidados" para acompanhamento interno; validar com logs oficiais na extracao final.
+        </p>
+
+        <section class="kpi-grid" id="indicadores">
+          <article class="kpi-card">
+            <p>Maturidade Digital (T1)</p>
+            <h2 id="kpi-receita">R$ 0</h2>
+            <span id="kpi-receita-var" class="positive">+0%</span>
+          </article>
+          <article class="kpi-card">
+            <p>Produtividade (T1)</p>
+            <h2 id="kpi-atendimentos">0</h2>
+            <span id="kpi-atendimentos-var" class="positive">+0%</span>
+          </article>
+          <article class="kpi-card">
+            <p>Vendas Online (T1)</p>
+            <h2 id="kpi-usuarios">0</h2>
+            <span id="kpi-usuarios-var" class="negative">-0%</span>
+          </article>
+          <article class="kpi-card">
+            <p>MPMEs em Escala</p>
+            <h2 id="kpi-nps">0</h2>
+            <span id="kpi-nps-var" class="positive">0/500</span>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel" id="vendas">
+            <div class="panel-header">
+              <h3>Evolucao de Vendas Online</h3>
+              <p>Serie historica ou comparativo T0 x T1 da base consolidada</p>
+            </div>
+            <canvas id="revenueChart" aria-label="Grafico de receita" role="img"></canvas>
+          </article>
+
+          <article class="panel" id="meta">
+            <div class="panel-header">
+              <h3>Metas de Impacto da Escala</h3>
+              <p>Compromissos operacionais da proposta</p>
+            </div>
+            <ul id="lista-impacto" class="goals-list"></ul>
+          </article>
+        </section>
+
+        <section class="panel" id="indicadores-edital">
+          <div class="panel-header">
+            <h3>Indicadores Obrigatorios do Edital</h3>
+            <p>T0, T1, variacao percentual, meta piloto e status</p>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Indicador</th>
+                  <th>Media T0</th>
+                  <th>Media T1</th>
+                  <th>Variacao</th>
+                  <th>Meta</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-indicadores-edital"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="plano-vendas-online">
+          <div class="panel-header">
+            <h3>Plano de Acao para Vendas Online</h3>
+            <p>Frente prioritaria para reverter o indicador nao atingido</p>
+          </div>
+          <ul id="lista-plano-vendas" class="plan-list"></ul>
+        </section>
+
+        <section class="panel" id="usuarios">
+          <div class="panel-header">
+            <h3>Top Unidades</h3>
+            <p>Desempenho no periodo atual</p>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Unidade</th>
+                  <th>Receita</th>
+                  <th>Atendimentos</th>
+                  <th>Conversao</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
