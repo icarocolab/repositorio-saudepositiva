@@ -157,6 +157,12 @@ body {
   color: var(--muted);
 }
 
+.status-note {
+  margin: -12px 0 0;
+  font-size: 0.86rem;
+  color: #6b7280;
+}
+
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -266,6 +272,35 @@ body {
 
 .table-wrapper {
   overflow: auto;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.status-chip.positive {
+  background: rgba(5, 150, 105, 0.12);
+}
+
+.status-chip.negative {
+  background: rgba(220, 38, 38, 0.12);
+}
+
+.plan-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.plan-list li {
+  color: #1f2937;
+  line-height: 1.45;
 }
 
 table {
